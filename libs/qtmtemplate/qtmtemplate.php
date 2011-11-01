@@ -14,8 +14,10 @@
 		protected $sections = array();
 		protected $data = array();
 
-		public function __construct($file) {
-			$this->addTemplate($file);
+		public function __construct($file = NULL) {
+			if($file !== NULL) {
+				$this->addTemplate($file);
+			}
 		}
 
 		public function addKey($key, $value) {
