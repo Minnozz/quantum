@@ -12,32 +12,41 @@
 		const KEY_END = '}';
 
 		protected $sections = array();
-		protected $data = array();
+		protected $values = array();
 
 		public function __construct($file = NULL) {
 			if($file !== NULL) {
 				$this->addTemplate($file);
 			}
+			$this->startSection();
 		}
 
 		public function addKey($key, $value) {
-			$this->data[$key] = $value;
+			$this->values[0][$key] = $value;
 		}
 
 		public function concatKey($key, $value) {
-			if(!isset($this->data[$key])) {
-				$this->data[$key] = $value;
+			if(!isset($this->values[0][$key])) {
+				$this->values[0][$key] = $value;
 			} else {
-				$this->data[$key] .= $value;
+				$this->values[0][$key] .= $value;
 			}
 		}
 
 		public function clear($key) {
-			unset($this->data[$key]);
+			unset($this->values[0][$key]);
 		}
 
 		public function getValue($key) {
-			return isset($this->data[$key]) ? $this->data[$key] : '';
+			foreach($this->values as $values) {
+				if(isset($values[$key])) {
+					return $values[$key];
+				}
+			}
+		}
+
+		public function startSection() {
+			array_unshift($this->values, array());
 		}
 
 		public function writeSection($section, $concat = true) {
@@ -47,6 +56,8 @@
 
 			$output = $this->replaceChildSections($section);
 			$output = $this->replaceKeys($output);
+
+			array_shift($this->values);
 
 			if($concat && isset($this->sections[$section]['output'])) {
 				$this->sections[$section]['output'] .= $output;
