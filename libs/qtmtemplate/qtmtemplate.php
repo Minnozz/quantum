@@ -48,7 +48,7 @@
 			$output = $this->replaceChildSections($section);
 			$output = $this->replaceKeys($output);
 
-			if($concat) {
+			if($concat && isset($this->sections[$section]['output'])) {
 				$this->sections[$section]['output'] .= $output;
 			} else {
 				$this->sections[$section]['output'] = $output;
