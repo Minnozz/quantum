@@ -54,6 +54,10 @@
 				throw new QTMTemplateException('Section '. $section .' does not exist');
 			}
 
+			if(count($this->values) == 0) {
+				throw new QTMTemplateException('Section was not started');
+			}
+
 			$output = $this->replaceChildSections($section);
 			$output = $this->replaceKeys($output);
 
